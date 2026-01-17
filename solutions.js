@@ -13,13 +13,13 @@ window.SOLUTIONS = {
         },
         code: `
 const twoSum = (arr, k) => {
-  const seen = new Map();
-  for (let i = 0; i < arr.length; i++) {
+    const seen = new Map();
+    for (let i = 0; i < arr.length; i++) {
     const c = k - arr[i];
     if (seen.has(c)) return [seen.get(c), i];
     seen.set(arr[i], i);
-  }
-  return [];
+    }
+    return [];
 };
 `
     }
