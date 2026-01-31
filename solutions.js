@@ -1,6 +1,7 @@
 // Put YOUR solutions here. Key must match problem.id in data.js
 
 window.SOLUTIONS = {
+    // This is the solution for the get TwoSum function:
     "two-sum": {
         fn: (arr, k) => {
             const seen = new Map();
@@ -23,9 +24,12 @@ const twoSum = (arr, k) => {
 };
 `
     },
-
+    // NOTE function is being passed in as an object and tied to the data:
+    // { input: [[1, 2, 3, 1]], expected: true },
     "contains-duplicate": {
-        fn: null,
+        fn: (arr, k) => {
+            const set = new Set(); 
+        },
         code: "// TODO: implement containsDuplicate (LC 217)"
     }
 };
