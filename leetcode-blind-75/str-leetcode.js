@@ -172,15 +172,63 @@ console.log(longestPalindrome("cbbd"));  // "bb"
 /*
  * LC 3 — Longest Substring Without Repeating Characters
  */
-console.log(lengthOfLongestSubstring("abcabcbb")); // 3
-console.log(lengthOfLongestSubstring("bbbbb"));    // 1
-console.log(lengthOfLongestSubstring("pwwkew"));   // 3
+const lengthOfLongestSubstring = (str) => {
+    if (typeof (str) !== 'string') throw new TypeError('str argh must be a string object');
+    if (str.length < 1) throw new RangeError('string must not be empty');
+    
+    let seen = new Map();
+    let left = 0;
+    let best = 0;
 
+    // sliding window dynamic view of the values within the string:
+    for (let right = 0; right < str.length; right++) {
+        let ch = str[right]; 
+
+        if (seen.has(ch) && seen.get(ch) >= left) {
+            left = seen.get(ch) + 1;
+        }
+        seen.set(ch, right);
+        best = Math.max(best, right - left + 1);
+    }
+    return best;
+}
+
+// NOTE there is an option of also returning the values as well:
+console.log(lengthOfLongestSubstring("abcabcbb")); // 3
 
 /*
  * LC 424 — Longest Repeating Character Replacement
  */
-console.log(characterReplacement("ABAB", 2));      // 4
+const characterReplacement = (str, k) => {
+    //* validation of the array arghs:
+    if (typeof (str) !== 'string') throw new TypeError('str must be a string');
+    if (typeof (k) !== 'number' || !Number.isFinite(k) || k < 0) {
+        throw new TypeError('k must be a non-negatice finite number');
+    };
+
+    // init the default values with the Map() global object:
+    const count = new Map();
+    let left = 0;
+    let maxFreq = 0;
+    let best = 0;
+
+    for (let right = 0; right < str.length; right++) {
+        const ch = str[right];
+        count.set(ch, (count.get(ch) || 0) + 1);
+
+        maxFreq = Math.max(maxFreq, count.get(ch));
+
+        while ((right - left + 1) - maxFreq > k) {
+            const leftChar = str[left];
+            count.set(leftChar, count.get(leftChar) - 1);
+            left++;
+        }
+
+        best = Math.max(best, right - left + 1);
+    }
+    return best;
+}
+
 console.log(characterReplacement("AABABBA", 1));   // 4
 
 

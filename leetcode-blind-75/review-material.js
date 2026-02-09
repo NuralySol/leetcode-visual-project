@@ -129,7 +129,6 @@ const binarySearchRounded = (arr, target, mode = 'floor') => {
     };
 }
 
-
 console.log(binarySearchRounded(
     [1, 6, 3, 2, 11, 15, 7, 18],
     12.5,
