@@ -135,3 +135,102 @@ console.log(binarySearchRounded(
     "floor"
 ));
 
+//! There is also variation (This appears constantly on leetcode):
+// lower bound: first >= target.
+const lowerBound = (arr, target) => {
+    let left = 0;
+    let right = arr.length;
+
+    while (left < right) {
+        const mid = Math.floor((left + right) / 2);
+        if (arr[mid] < target) {
+            left = mid + 1;
+        } else {
+            right = mid;
+        }
+    }
+    return left;
+}
+
+console.log(lowerBound([1, 3, 5, 10, 12, 13], 12));
+
+//! Upper Bound first > target:
+const upperBound = (arr, target) => {
+    let left = 0;
+    let right = arr.length;
+    while (left < right) {
+        const mid = Math.floor((left + right) / 2);
+        if (arr[mid] <= target) {
+            left = mid + 1;
+        } else {
+            right = mid;
+        }
+    }
+    return left;
+}
+
+console.log(upperBound([1, 2, 3, 4, 6, 11, 13], 3));
+
+//! Prompt: Given a rotated sorted array nums and a target, return its index or -1:
+const searchRotated = (arr, target) => {
+    //* init the left and right of the array length:
+    let left = 0;
+    let right = arr.length - 1;
+
+    // NOTE left <= right: it is imperative that left is less than && == to the right:
+    while (left <= right) {
+        // NOTE another way of getting mid is Math.floor((left + right) / 2): 
+        const mid = left + Math.floor((right - left) / 2);
+
+        if (arr[mid] === target) return mid;
+
+        // left side sorted:
+        if (arr[left] <= arr[mid]) {
+            if (arr[left] <= target && target < arr[mid]) {
+                right = mid - 1;
+            } else {
+                left = mid + 1;
+            }
+        }
+        // right side sorted:
+        else {
+            if (arr[mid] < target && target <= arr[right]) {
+                left = mid + 1;
+            } else {
+                right = mid - 1;
+            }
+        }
+    }
+    return - 1;
+}
+
+console.log(searchRotated([4, 5, 6, 7, 0, 1, 2], 0)); // 4
+
+//! Graph sercheas are important in finding the depth, of tree like structure and find the nodes within it in the most efficient way possible:
+const graph = {
+    A: ["B", "C"],
+    B: ["D"],
+    C: ["E"],
+    D: [],
+    E: []
+};
+
+console.log('tree:', graph);
+
+//! DFS recursive solution:
+const dfs = (graph, node, visited = new Set()) => {
+    if (visited.has(node)) return;
+
+    visited.add(node);
+    console.log(node);
+
+    for (const neighbor of graph[node]) {
+        dfs(graph, neighbor, visited);
+    }
+};
+
+console.log(dfs(graph, "A"));
+
+
+
+

@@ -8,3 +8,5 @@ const df = new dfd.DataFrame({
 });
 
 df.print()
+
+// This is Not as good as Pandas DF structure.

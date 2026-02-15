@@ -1,0 +1,52 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>TimSort Bar Visualizer</title>
+    <style>
+        body {
+            font-family: system-ui;
+            margin: 20px;
+        }
+
+        canvas {
+            border: 1px solid #ddd;
+            display: block;
+            margin-top: 12px;
+        }
+
+        button {
+            margin-right: 8px;
+        }
+
+        .row {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        input {
+            width: 80px;
+        }
+    </style>
+</head>
+
+<body>
+    <h3>Basic TimSort – Animated Bars</h3>
+
+    <div class="row">
+        <button id="run">Run</button>
+        <button id="shuffle">Shuffle</button>
+        <label>Speed (ms/step): <input id="speed" type="number" value="60" min="0"></label>
+        <label>minRun: <input id="minrun" type="number" value="8" min="2"></label>
+    </div>
+
+    <canvas id="c" width="900" height="280"></canvas>
+
+    <!-- all logic of the tim sort lives here -->
+    <script src="./tim-sort.js"></script>
+</body>
+
+</html>
