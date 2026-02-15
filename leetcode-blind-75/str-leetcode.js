@@ -175,14 +175,14 @@ console.log(longestPalindrome("cbbd"));  // "bb"
 const lengthOfLongestSubstring = (str) => {
     if (typeof (str) !== 'string') throw new TypeError('str argh must be a string object');
     if (str.length < 1) throw new RangeError('string must not be empty');
-    
+
     let seen = new Map();
     let left = 0;
     let best = 0;
 
     // sliding window dynamic view of the values within the string:
     for (let right = 0; right < str.length; right++) {
-        let ch = str[right]; 
+        let ch = str[right];
 
         if (seen.has(ch) && seen.get(ch) >= left) {
             left = seen.get(ch) + 1;
@@ -235,10 +235,66 @@ console.log(characterReplacement("AABABBA", 1));   // 4
 /*
  * LC 76 — Minimum Window Substring
  */
-console.log(minWindow("ADOBECODEBANC", "ABC")); // "BANC"
-console.log(minWindow("a", "a"));               // "a"
-console.log(minWindow("a", "aa"));              // ""
 
+const minWindow = (s, t) => {
+    // validate types first
+    if (typeof s !== "string" || typeof t !== "string") {
+        throw new TypeError("s and t must be strings!");
+    }
+
+    // quick exits
+    if (t.length === 0) return "";
+    if (s.length === 0 || t.length > s.length) return "";
+
+    // 1) build freq map for t
+    const need = new Map();
+    for (const char of t) {
+        need.set(char, (need.get(char) || 0) + 1);
+    }
+
+    const required = need.size; // unique chars to satisfy
+    let formed = 0;
+
+    // 2) sliding window
+    const window = new Map();
+    let left = 0;
+
+    // best answer tracking
+    let bestLen = Infinity;
+    let bestStart = 0;
+
+    // 3) expand with right
+    for (let right = 0; right < s.length; right++) {
+        const c = s[right];
+        window.set(c, (window.get(c) || 0) + 1);
+
+        if (need.has(c) && window.get(c) === need.get(c)) {
+            formed++;
+        }
+
+        // 4) shrink left while valid (IMPORTANT: shrink logic lives INSIDE while)
+        while (formed === required) {
+            const winLen = right - left + 1;
+            if (winLen < bestLen) {
+                bestLen = winLen;
+                bestStart = left;
+            }
+
+            const leftChar = s[left];
+            window.set(leftChar, window.get(leftChar) - 1);
+
+            if (need.has(leftChar) && window.get(leftChar) < need.get(leftChar)) {
+                formed--;
+            }
+
+            left++;
+        }
+    }
+
+    return bestLen === Infinity ? "" : s.slice(bestStart, bestStart + bestLen);
+};
+
+console.log(minWindow("ADOBECODEBANC", "ABC")); // "BANC"
 
 /* ============================================================
  * 4. SUBSTRING / PARSING
@@ -289,7 +345,7 @@ console.log(wordPattern("abba", "dog cat cat fish"));// false
 /*
  * LC 271 — Encode and Decode Strings
  */
-const encoded = encode(["lint","code","love","you"]);
+const encoded = encode(["lint", "code", "love", "you"]);
 console.log(encoded);
 console.log(decode(encoded)); // ["lint","code","love","you"]
 
@@ -302,8 +358,8 @@ console.log(decode(encoded)); // ["lint","code","love","you"]
 /*
  * LC 14 — Longest Common Prefix
  */
-console.log(longestCommonPrefix(["flower","flow","flight"])); // "fl"
-console.log(longestCommonPrefix(["dog","racecar","car"]));    // ""
+console.log(longestCommonPrefix(["flower", "flow", "flight"])); // "fl"
+console.log(longestCommonPrefix(["dog", "racecar", "car"]));    // ""
 
 
 /***********************************************************************
