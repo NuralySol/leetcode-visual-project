@@ -305,13 +305,102 @@ console.log(minWindow("ADOBECODEBANC", "ABC")); // "BANC"
  * LC 28 — Implement strStr()
  * Find the first index of needle in haystack.
  */
-console.log(strStr("hello", "ll")); // 2
-console.log(strStr("aaaaa", "bba"));// -1
+
+// This the naive solution but interview acceptable"
+const strStrNaive = (haystack, needle) => {
+    if (typeof (haystack) !== 'string' || typeof (needle) !== 'string') {
+        throw new TypeError('haystack and need must be strings!')
+    }
+
+    if (needle === '') return 0;
+    if (needle.length > haystack.length) return - 1;
+
+    for (let i = 0; i <= haystack.length - needle.length; i++) {
+        let j = 0;
+
+        while (j < needle.length && haystack[i + j] === needle[j]) {
+            j++;
+        }
+        if (j === needle.length) return i;
+    }
+    return - 1;
+}
+
+console.log(strStrNaive("hello", "ll")); // 2
+console.log(strStrNaive("leetcode", "leeto")); // -1
+
+//! Pattern LPS array (Longest Prefix that is also a Suffix), so when a mismatch happens, you don't restart from scratch:
+
+//* this is a helper function that feeds into the main function strStrKMP:
+const buildLPS = (pattern) => {
+    // create a prototype array == to pattern argh length:
+    const lps = new Array(pattern.length).fill(0);
+    let len = 0; // current longest prefix-suffix length:
+    let i = 1;
+
+    while (i < pattern.length) {
+        if (pattern[i] === pattern[len]) {
+            len++;
+            lps[i] = len;
+            i++;
+        } else {
+            if (len !== 0) {
+                len = lps[len - 1];
+            } else {
+                lps[i] = 0;
+                i++;
+            }
+        }
+    }
+    return lps;
+}
+
+const strStrKMP = (haystack, needle) => {
+    // validation of the arghs of the main function:
+    if (typeof (haystack) !== 'string' || typeof (needle) !== 'string') {
+        throw new TypeError('haystack and needle must be strings:');
+    };
+    // base case returns early termination:
+    if (needle === '') return 0;
+    if (needle.length > haystack.length) return - 1;
+
+    const lps = buildLPS(needle);
+
+    let i = 0; // haystack pointer
+    let j = 0; // needle pointer
+
+    while (i < haystack.length) {
+        if (haystack[i] === needle[j]) {
+            i++;
+            j++;
+
+            if (j === needle.length) {
+                return i - j;
+            }
+        } else {
+            if (j !== 0) {
+                j = lps[j - 1];
+            } else {
+                i++;
+            }
+        }
+    }
+    return - 1;
+}
+
+console.log(strStrKMP("sadbutsad", "sad")); // 0
+console.log(strStrKMP("leetcode", "leeto")); // -1
 
 
 /*
  * LC 20 — Valid Parentheses
  */
+
+//! function for the valid parenthesis:
+const isValid = (s) => {
+    
+}
+
 console.log(isValid("()"));        // true
 console.log(isValid("()[]{}"));    // true
 console.log(isValid("(]"));        // false
