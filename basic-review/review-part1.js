@@ -166,3 +166,68 @@ const factorialIterative = (n) => {
 };
 
 console.log(factorialIterative(5));
+
+//* Fibonacci sequence, recursion with memoization!
+const fibMemo = (n, memo = {}) => {
+    if (n in memo) return memo[n];
+    if (n === 0) return 0;
+    if (n === 1) return 1;
+
+    memo[n] = fibMemo(n - 1, memo) + fibMemo(n - 2, memo);
+    return memo[n];
+}
+
+console.log(fibMemo(10));
+
+//* Iterative loop Fibonacci sequence:
+const fibIterative = (n) => {
+    if (n === 0) return 0;
+    if (n === 1) return 1;
+
+    let prev2 = 0;
+    let prev1 = 1;
+
+    for (let i = 2; i <= n; i++) {
+        const current = prev1 + prev2;
+        prev2 = prev1;
+        prev1 = current;
+    }
+    return prev1;
+}
+
+console.log(fibIterative(11));
+
+//* Dynamic programming with tabulation array:
+const fibTabulation = (n) => {
+    if (n === 0) return 0;
+    if (n === 1) return 1;
+
+    const dp = new Array(n + 1).fill(0);
+    dp[1] = 1;
+
+    for (let i = 2; i <= n; i++) {
+        dp[i] = dp[i - 1] + dp[i - 2];
+    }
+    return dp[n];
+};
+
+console.log(fibTabulation(12));
+
+
+//! Golden ration formula of the fibonacci sequence!
+/*
+Fibonacci Closed Form (Binet's Formula)
+
+F(n) = (φ^n - ψ^n) / √5
+
+Where:
+
+φ = (1 + √5) / 2   // Golden Ratio
+ψ = (1 - √5) / 2
+
+This formula allows direct computation of the nth Fibonacci number
+without recursion or iteration.
+
+Note:
+Floating point precision may cause inaccuracies for large n.
+*/
