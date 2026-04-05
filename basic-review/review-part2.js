@@ -102,7 +102,7 @@ const maxSumSubarray = (arr, k) => {
     // slide the window:
     for (let right = k; right < arr.length; right++) {
         windowSum += arr[right]; // add new right value:
-        windowSum += arr[left] // remove the old left value:
+        windowSum -= arr[left] // remove the old left value:
         left++;
 
         // get the Math.max value from the maxSum, or the windowSum vars!
@@ -112,4 +112,4 @@ const maxSumSubarray = (arr, k) => {
 }
 
 // the expected output of this function is 9! 
-console.log(maxSumSubarray([2, 1, 5, 1, 3, 2], 3)); 
+console.log(maxSumSubarray([2, 1, 5, 1, 3, 2], 3));
